@@ -94,26 +94,6 @@ window.fx = (function (exports) {
         class ServerJsonCfg {
         }
         SDKEntity.ServerJsonCfg = ServerJsonCfg;
-        /**
-         * 开放数据域类型枚举
-         */
-        let OpenContextType;
-        (function (OpenContextType) {
-            OpenContextType["UNKNOWN"] = "unknown";
-            OpenContextType["CHANGE_SCENE"] = "changescene";
-            OpenContextType["LOADRES"] = "loadres";
-            OpenContextType["SETRANK"] = "setrank";
-            OpenContextType["CHANGE_PAGE"] = "changepage";
-            OpenContextType["UNDISPLAY"] = "undisplay";
-            OpenContextType["TOUCH_EVENT"] = "touch_event";
-            OpenContextType["PASS_EVENT"] = "pass_event";
-        })(OpenContextType = SDKEntity.OpenContextType || (SDKEntity.OpenContextType = {}));
-        /**
-         * 开放数据域消息结构
-         */
-        class OpenContextMsg {
-        }
-        SDKEntity.OpenContextMsg = OpenContextMsg;
         let DataStubType;
         (function (DataStubType) {
             DataStubType[DataStubType["SHARE_SUCCESS"] = 0] = "SHARE_SUCCESS";
@@ -290,10 +270,6 @@ window.fx = (function (exports) {
     }
     // 登录事件
     SdkEvent.E_SDK_LOGIN = "$SDK_LOGIN";
-    // 排行榜设置数据
-    SdkEvent.E_RANK_PAGE = '$SET_RANK_PAGE';
-    SdkEvent.E_RANK_HIDE = '$SET_RANK_HIDE';
-    SdkEvent.E_RANK_TOUCH_EVENT = '$E_RANK_TOUCH_EVENT';
     SdkEvent.E_PASS_DATA_EVENT = 'E_PASS_DATA_EVENT';
     class SdkUIEvent {
     }
@@ -578,7 +554,7 @@ window.fx = (function (exports) {
      *
      * Copyright (c) 2019 Chengdu Waterbear Co.,LTD.
      */
-    const FX_VERSION = '1.0.005';
+    const FX_VERSION = '1.0.006';
     var Vector2 = Laya.Vector2;
     var Vector3 = Laya.Vector3;
     var Color = Laya.Color;
@@ -7895,11 +7871,6 @@ window.fx = (function (exports) {
     QQRewardStrategy._rewardStrategyCnt = undefined; //奖励策略计数
     ;
 
-    /*
-    * Created on Fri Mar 15 2019 by alimwang
-    *
-    * Copyright (c) 2019 Chengdu Waterbear Co.,LTD.
-    */
     // 微信数据解析
     function pf_wxInfo_to_playerInfo$2(wxInfo, userInfo) {
         if (wxInfo.nickName != undefined)
@@ -8237,6 +8208,7 @@ window.fx = (function (exports) {
         judgeBAndW(params) {
             let property = undefined;
             let sceneId = params.sceneId;
+            let Sdk = Laya.ClassUtils.getRegClass('Sdk');
             if (!sceneId) {
                 property = "black";
             }
@@ -12566,16 +12538,6 @@ window.fx = (function (exports) {
         //========================================================================
         getOpenDataContext() {
             return this.loginInst.getOpenDataContext();
-        }
-        /**
-         * 向开发数据域发送消息
-         * @param data
-         */
-        postMessage(data) {
-            let odc = this.getOpenDataContext();
-            if (odc) {
-                odc.postMessage(data);
-            }
         }
         /**
           * 显示客服对话框
